@@ -1,28 +1,22 @@
 const express = require("express");
-const app = express();
+const bodyParser = require("body-parser");
+const cors = require("cors");
 const mongoose = require("mongoose");
 
+const app = express();
+
 mongoose.connect("mongodb+srv://admin-motiur:T%40bleT0p13@cluster0.aaq3igl.mongodb.net/keeperDB");
+const connection = mongoose.connection;
+connection.once("open", () => {
+    console.log("MongoDB database connection established");
+});
 
-const noteSchema = {
-    title: String,
-    content: String
-}
+app.use(cors());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static("public"));
 
-const Note = mongoose.model("Note", noteSchema);
-
-app.post("/", function (req, res) {
-    const Note = new Note({
-        title: req.body.noteTitle,
-        content: req.body.noteContent
-    });
-
-    post.save(function (err) {
-        if (!err) {
-            res.redirect("/");
-        }
-    })
-})
+const notesRouter = require("./routes.js");
+app.use("/notes", notesRouter);
 
 app.listen(5000, function () {
     console.log("Server started on port 5000");

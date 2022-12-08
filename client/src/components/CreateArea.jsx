@@ -4,7 +4,6 @@ import Fab from "@mui/material/Fab";
 import Zoom from "@mui/material/Zoom";
 
 function CreateArea(props) {
-    //hook for creating note
     const [note, setNote] = useState({
         title: "",
         content: ""
@@ -21,7 +20,6 @@ function CreateArea(props) {
         })
     }
 
-    //hook for expanding box
     const [isExpanded, setExpanded] = useState(false);
 
     function expand() {
