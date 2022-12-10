@@ -3,11 +3,13 @@ import Header from "./Header";
 import Footer from "./Footer";
 import CreateArea from "./CreateArea";
 import Note from "./Note";
+import Modal from "./Modal";
 import axios from "axios";
 import qs from 'qs';
 
 function App() {
   const [allNotes, setAllNotes] = useState([]);
+  const [modalOnOff, setModalOnOff] = useState(false);
 
   useEffect(() => {
     axios.get("http://localhost:5000/notes")
@@ -33,11 +35,19 @@ function App() {
   }
 
   function deleteNote(id) {
-    axios.delete("http://localhost:5000/notes/", {params: {id: id}})
+    axios.delete("http://localhost:5000/notes/", { params: { id: id } })
+  }
+
+  function editNote(id) {
+    console.log("hi");
+    console.log(allNotes);
+    setModalOnOff(true);
+
   }
 
   return (
     <div>
+      {modalOnOff && <Modal />}
       <Header />
       <CreateArea onAdd={addNote} />
       {allNotes.map((noteItem, index) => {
@@ -48,10 +58,13 @@ function App() {
             title={noteItem.title}
             content={noteItem.content}
             onDelete={deleteNote}
+            onEdit={editNote}
           />
         )
       })}
+
       <Footer />
+
     </div>
   )
 }
