@@ -65,6 +65,7 @@ function App() {
     const data = qs.stringify(modalFields);
     axios.put("http://localhost:5000/notes/" + id, data)
       .then(res => console.log(res.data))
+      .then(setModalOnOff(false));
   }
 
   function modalCancel() {
@@ -115,7 +116,6 @@ function App() {
       })}
 
       <Footer />
-
     </div>
   )
 }
