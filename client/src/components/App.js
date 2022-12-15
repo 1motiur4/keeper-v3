@@ -15,9 +15,10 @@ function App() {
     title: "",
     content: ""
   });
+  const notesURL = "http://localhost:5000/notes/";
 
   useEffect(() => {
-    axios.get("http://localhost:5000/notes")
+    axios.get(notesURL)
       .then(res => {
         setAllNotes(res.data);
       })
@@ -34,18 +35,18 @@ function App() {
       title: newNote.title,
       content: newNote.content
     });
-    axios.post("http://localhost:5000/notes",
+    axios.post(notesURL,
       data, headers
     ).then(res => console.log(res.data));
   }
 
   function deleteNote(id) {
-    axios.delete("http://localhost:5000/notes/", { params: { id: id } })
+    axios.delete(notesURL, { params: { id: id } })
   }
 
   function editNote(id) {
     setModalOnOff(true);
-    axios.get("http://localhost:5000/notes/" + id)
+    axios.get(notesURL + id)
       .then(res => {
         console.log("Opened edit modal for: ");
         console.log(res.data);
@@ -63,7 +64,7 @@ function App() {
   function modalSave(id) {
     console.log("beginning of modalSave")
     const data = qs.stringify(modalFields);
-    axios.put("http://localhost:5000/notes/" + id, data)
+    axios.put(notesURL + id, data)
       .then(res => console.log(res.data))
       .then(setModalOnOff(false));
   }
