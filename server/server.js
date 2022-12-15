@@ -3,10 +3,12 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
-
 const app = express();
 
-mongoose.connect("mongodb+srv://admin-motiur:T%40bleT0p13@cluster0.aaq3igl.mongodb.net/keeperDB");
+const mongoUN = process.env.MONGOUN;
+const mongoPW = process.env.MONGOPW;
+
+mongoose.connect("mongodb+srv://" + mongoUN + ":" + mongoPW + "@cluster0.aaq3igl.mongodb.net/keeperDB");
 const connection = mongoose.connection;
 connection.once("open", () => {
     console.log("MongoDB database connection established");

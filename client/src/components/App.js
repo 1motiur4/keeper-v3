@@ -17,6 +17,7 @@ function App() {
   });
   const notesURL = "http://localhost:5000/notes/";
 
+  //Grabs all notes
   useEffect(() => {
     axios.get(notesURL)
       .then(res => {
@@ -62,13 +63,13 @@ function App() {
   }
 
   function modalSave(id) {
-    console.log("beginning of modalSave")
     const data = qs.stringify(modalFields);
     axios.put(notesURL + id, data)
       .then(res => console.log(res.data))
       .then(setModalOnOff(false));
   }
 
+  //Modal cancel button
   function modalCancel() {
     setModalOnOff(false);
     setModalFields({
@@ -78,6 +79,7 @@ function App() {
     })
   }
 
+  //This handler is most likely unnecessary
   function handleChange(event) {
     const { name, value } = event.target;
 
@@ -99,7 +101,7 @@ function App() {
           content={modalFields.content}
           onSave={modalSave}
           onCancel={modalCancel}
-          onChange={handleChange}
+          onChange={handleChange} //most likely unnecessary
         />}
       <Header />
       <CreateArea onAdd={addNote} />
