@@ -3,10 +3,15 @@ import React from 'react';
 function Modal(props) {
     function handleSaveClick(event) {
         props.onSave(props.id);
+
+        // If the execution of the previous line fails, this line won't execute
+        // I generally preventDefault before executing anything else unless there is a need for that 
+        // (which is really specific and not your case here)
         event.preventDefault();
     }
 
     function handleCancelClick() {
+        // No prevent default here ??
         props.onCancel();
     }
 

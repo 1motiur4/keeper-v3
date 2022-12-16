@@ -169,8 +169,9 @@ export default App;
 // There is no special rules to say something is well designed, some of the SOLID/YAGNI principles helps 
 // but it all depends on what you are trying to achieve
 
-// 2 - Advanced: The first problem leads to a second one. React Reconciliation. Read about it, it explains how React works.
-// React renders components when its props or state changed. For that React use shallow equality.
+// 2 - Advanced: The first problem leads to a second one. An optimization problem => React Reconciliation. 
+// Read about it, it explains how React works.
+// React renders components when their props or state changed. For that React use shallow equality.
 
 // Shallow equality is the equivalent of "===". So:
 "i am noodle" === "i am noodle" // true
@@ -216,7 +217,18 @@ const Root = () => {
       {counter}
       <button onClick={() => setCounter(counter => counter + 1)}>Click me</button>
       <ComponentA value={"Test A"} />
-      <ComponentA value={{ message: "Test B"}} />
+      <ComponentB value={{ message: "Test B"}} />
     </>
   )
 }
+// What would happend in this scenario when you click on the button?
+// 1 - React is notified for the change of the counter state inside the Root component
+// 2 - React proceed to reconcialiation on the Root component, properties did not change (there is none) but counter state is now 1 (was 0 before), need to render
+// 3 - Root component renders
+// 4 - ComponentA Reconcialiation triggers: returns true since "Test A" === "Test A"
+// 5 - ComponentB Reconcialiation triggers: return false since { message: "Test B" } !== { message: "Test B" }, two different objects even if they look alike
+// 6 - ComponentB renders even if nothing will change for its output
+
+// It's the same for all your function addNote, editNote, saveNote... They all are new created function at each renders, 
+// so they are different from the one there was of previous render
+// See useCallback to help mitigate this behaviour
