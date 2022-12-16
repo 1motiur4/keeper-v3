@@ -19,13 +19,38 @@ router.route("/:id").get((req, res) => {
     console.log("Edit requested for id: " + req.params.id);
 });
 
+
 //Called when saving edit modal
 router.route("/:id").put(async (req, res) => {
     console.log("testing route put res");
     console.log(req.body);
-    await Note.findByIdAndUpdate(req.params.id, req.body)
-    .then("Note updated")
-    .catch(err => res.status(400).json("Error " + err));
+    
+    // Level: Advanced
+    
+    // What you were doing:
+    // await Note.findByIdAndUpdate(req.params.id, req.body)
+    // .then("Note updated")
+    // .catch(err => res.status(400).json("Error " + err));
+    
+    // Here the problem is that you are using async/await syntax. 
+    // This syntax allow the code to wait for a promise to resolve 
+    // in order to carry on with the next line.
+    try {
+      await Note.findByIdAndUpdate(req.params.id, req.body);
+
+      // This is useless, is is related to the "then("Note updated")". It's useless for the promise to resolve a value since it's not used
+      return "Note updated"; 
+    }
+    catch(err) {
+      res.status(400).json("Error " + err)
+    }
+
+    // When using the async/await syntax, you are asking JS to wait for the promise to resolve
+    // So the code will wait. But you may not need to wait for the promise to resolve 
+    // if the calling code does not need a value from this code.
+    // Here the routing code gives you a response object to use to answer the request.
+    // The routing code does not expect any promises or value in return so you don't need to send a value back, 
+    // neither that you have to await your promises. This code execute your function and goes down.
 })
 
 //Called when posting a new note
