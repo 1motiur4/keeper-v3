@@ -2,11 +2,12 @@ import React from 'react';
 
 function Modal(props) {
     function handleSaveClick(event) {
-        props.onSave(props.id);
         event.preventDefault();
+        props.onSave(props.id);
     }
 
-    function handleCancelClick() {
+    function handleCancelClick(event) {
+        event.preventDefault();
         props.onCancel();
     }
 

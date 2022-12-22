@@ -9,12 +9,14 @@ import qs from 'qs';
 
 function App() {
   const [allNotes, setAllNotes] = useState([]);
+  const [invalidate, setInvalidate] = useState(true);
   const [modalOnOff, setModalOnOff] = useState(false);
   const [modalFields, setModalFields] = useState({
     id: "",
     title: "",
     content: ""
   });
+
   const notesURL = "http://localhost:5000/notes/";
 
   //Grabs all notes
@@ -22,11 +24,12 @@ function App() {
     axios.get(notesURL)
       .then(res => {
         setAllNotes(res.data);
+        setInvalidate(false); //Data is now valid
       })
       .catch(err => {
         console.log(err)
       })
-  });
+  }, [invalidate]);
 
   function addNote(newNote) {
     const headers = {
@@ -38,11 +41,15 @@ function App() {
     });
     axios.post(notesURL,
       data, headers
-    ).then(res => console.log(res.data));
+    ).then(() => { 
+      console.log("Log from addNote before setInvalidate(true)" + invalidate)
+      setInvalidate(true) })
+      .catch(console.error)
   }
 
   function deleteNote(id) {
     axios.delete(notesURL, { params: { id: id } })
+      .then(() => { setInvalidate(true) })
   }
 
   function editNote(id) {
@@ -65,8 +72,10 @@ function App() {
   function modalSave(id) {
     const data = qs.stringify(modalFields);
     axios.put(notesURL + id, data)
-      .then(res => console.log(res.data))
-      .then(setModalOnOff(false));
+      .then(() => { 
+        setInvalidate(true);
+        modalCancel();
+      })
   }
 
   //Modal cancel button
@@ -79,7 +88,8 @@ function App() {
     })
   }
 
-  //This handler is most likely unnecessary
+  //I thought this handler was unnecessary 
+  //but removing it means modalFields doesn't get changes
   function handleChange(event) {
     const { name, value } = event.target;
 
