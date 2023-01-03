@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
-import Header from "./Header";
-import Footer from "./Footer";
-import CreateArea from "./CreateArea";
-import Note from "./Note";
-import Modal from "./Modal";
-import axios from "axios";
-import qs from 'qs';
+import CreateArea from "../components/CreateArea";
+import Note from "../components/Note";
+import Modal from "../components/Modal";
 
-function App() {
+import { fetchNotes, addNote, deleteNote, fetchNote, editNote } from "../actions";
+
+function NotesView() {
   const [allNotes, setAllNotes] = useState([]);
   const [invalidate, setInvalidate] = useState(true);
   const [modalOnOff, setModalOnOff] = useState(false);
@@ -17,11 +15,9 @@ function App() {
     content: ""
   });
 
-  const notesURL = "http://localhost:5000/notes/";
-
   //Grabs all notes
   useEffect(() => {
-    axios.get(notesURL)
+    fetchNotes()
       .then(res => {
         setAllNotes(res.data);
         setInvalidate(false); //Data is now valid
@@ -31,30 +27,23 @@ function App() {
       })
   }, [invalidate]);
 
-  function addNote(newNote) {
-    const headers = {
-      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-    };
-    const data = qs.stringify({
-      title: newNote.title,
-      content: newNote.content
-    });
-    axios.post(notesURL,
-      data, headers
-    ).then(() => { 
-      console.log("Log from addNote before setInvalidate(true)" + invalidate)
-      setInvalidate(true) })
+  function _addNote(newNote) {
+    addNote(newNote)
+      .then(() => {
+        console.log("Log from addNote before setInvalidate(true)" + invalidate)
+        setInvalidate(true)
+      })
       .catch(console.error)
   }
 
-  function deleteNote(id) {
-    axios.delete(notesURL, { params: { id: id } })
+  function _deleteNote(id) {
+    deleteNote(id)
       .then(() => { setInvalidate(true) })
   }
 
-  function editNote(id) {
+  function _editNote(id) {
     setModalOnOff(true);
-    axios.get(notesURL + id)
+      fetchNote(id)
       .then(res => {
         console.log("Opened edit modal for: ");
         console.log(res.data);
@@ -70,9 +59,8 @@ function App() {
   }
 
   function modalSave(id) {
-    const data = qs.stringify(modalFields);
-    axios.put(notesURL + id, data)
-      .then(() => { 
+      editNote(id, modalFields)
+      .then(() => {
         setInvalidate(true);
         modalCancel();
       })
@@ -102,7 +90,7 @@ function App() {
   }
 
   return (
-    <div>
+    <>
       {
         modalOnOff &&
         <Modal
@@ -113,8 +101,7 @@ function App() {
           onCancel={modalCancel}
           onChange={handleChange} //most likely unnecessary
         />}
-      <Header />
-      <CreateArea onAdd={addNote} />
+      <CreateArea onAdd={_addNote} />
       {allNotes.map((noteItem, index) => {
         return (
           <Note
@@ -122,15 +109,14 @@ function App() {
             id={noteItem._id}
             title={noteItem.title}
             content={noteItem.content}
-            onDelete={deleteNote}
-            onEdit={editNote}
+            onDelete={_deleteNote}
+            onEdit={_editNote}
           />
         )
       })}
 
-      <Footer />
-    </div>
+    </>
   )
 }
 
-export default App;
+export default NotesView;
