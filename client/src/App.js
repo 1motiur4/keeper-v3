@@ -2,7 +2,8 @@ import React from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import NotesView from "./notes/views/NotesView";
-import Login from "./Login";
+import Login from "./user/components/Login";
+import Register from "./user/components/Register";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
@@ -23,8 +24,8 @@ function App() {
     return (
       <div>
         <Header />
-        <Login 
-          onClick={handleClick}
+        <Register 
+          // onClick={handleClick}
         />
         <Footer />
       </div>
