@@ -2,7 +2,7 @@ import React from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import NotesView from "./notes/views/NotesView";
-import Login from "./user/components/Login";
+//import Login from "./user/components/Login";
 import Register from "./user/components/Register";
 
 function App() {
@@ -24,9 +24,7 @@ function App() {
     return (
       <div>
         <Header />
-        <Register 
-          // onClick={handleClick}
-        />
+        <Register />
         <Footer />
       </div>
     )

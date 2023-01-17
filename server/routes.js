@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const bodyParser = require("body-parser");
 let Note = require("./models/Note");
+let User = require("./models/User");
 
 router.use(bodyParser.urlencoded({ extended: true }));
 
@@ -54,6 +55,19 @@ router.route("/").delete(async (req, res) => {
         console.log("Log from delete route: note deleted");
     })
     console.log("Log from routes.js - deleted: " + req.query.id);
+})
+
+router.route("/register").post((req, res) => {
+    const newUser = new User({
+        username: req.body.username,
+        password: req.body.password
+    });
+    newUser.save()
+        .then(() => {
+            console.log("New user created");
+            res.status(200).end();
+        })
+        .catch(err => console.log(err));
 })
 
 module.exports = router;
