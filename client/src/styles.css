@@ -177,3 +177,13 @@ form.create-note button {
   text-align: center;
   font-size: 2rem;
 } 
+
+.homeButtons {
+  text-align: center;
+  align-items: center;
+}
+
+.homeButtons button {
+  width: 200px;
+  height: 50px;
+}
