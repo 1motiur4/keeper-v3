@@ -1,19 +1,27 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, redirect, useNavigate } from 'react-router-dom'
 import { Button } from 'react-bootstrap'
 
 const Home = () => {
+    let navigate = useNavigate();
+
     return (
-        <div>
+        <div className='homeButtons'>
             <p className='homeTitle'>Just click one of the buttons below pls</p>
-            <div className="homeButtons">
-                <Link to="/login"><button>Login</button></Link>
-                <Link to="/register">Register</Link>
 
-                
+
+            <div className="container">
+                <div className="col">
+                    <Button
+                        onClick={() => { navigate("/login") }}>
+                        Login
+                    </Button>
+                    <Button
+                        onClick={() => { navigate("/register") }}>
+                        Register
+                    </Button>
+                </div>
             </div>
-
-            <Button variant="primary">Primary</Button>
         </div>
     )
 }

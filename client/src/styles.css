@@ -172,12 +172,6 @@ form.create-note button {
   padding-top: 5%;
 }
 
-.loginLink {
-  
-  text-align: center;
-  font-size: 2rem;
-} 
-
 .homeButtons {
   text-align: center;
   align-items: center;
@@ -186,4 +180,5 @@ form.create-note button {
 .homeButtons button {
   width: 200px;
   height: 50px;
+  margin: 5px;
 }
