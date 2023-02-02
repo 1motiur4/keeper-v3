@@ -25,11 +25,11 @@ function Login() {
                     <h3>Login here to access your notes</h3>
                 </div>
                 <div className="row">
-                    <label for="username">Username: </label>
+                    <label htmlFor="username">Username: </label>
                     <input name="username" type="text" onChange={handleChange}></input>
                 </div>
                 <div className="row">
-                    <label for="password">Password: </label>
+                    <label htmlFor="password">Password: </label>
                     <input name="password" type="password" onChange={handleChange}></input>
                 </div>
                 <div className="row">
