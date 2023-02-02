@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, redirect, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Button } from 'react-bootstrap'
 
 const Home = () => {
@@ -7,9 +7,7 @@ const Home = () => {
 
     return (
         <div className='homeButtons'>
-            <p className='homeTitle'>Just click one of the buttons below pls</p>
-
-
+            <h3>Click one of the buttons below pls</h3>
             <div className="container">
                 <div className="col">
                     <Button

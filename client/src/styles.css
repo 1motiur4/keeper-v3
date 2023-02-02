@@ -166,8 +166,7 @@ form.create-note button {
   outline: none;
 }
 
-.homeTitle {
-  text-align: center;
+.homeButtons h3 {
   font-size: 2rem;
   padding-top: 5%;
 }
@@ -180,5 +179,24 @@ form.create-note button {
 .homeButtons button {
   width: 200px;
   height: 50px;
-  margin: 5px;
+  margin: 20px 10px;
+}
+
+.loginText {
+  align-items: center;
+  width: 500px;
+  margin: auto;
+}
+
+.loginText h3 {
+  text-align: center;
+}
+
+.loginText input {
+  margin-bottom: 20px;
+}
+
+.loginText button {
+  width: 25%;
+  margin: auto;
 }
