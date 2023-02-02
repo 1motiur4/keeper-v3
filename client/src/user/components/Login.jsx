@@ -18,8 +18,14 @@ function Login() {
         })
     }
 
+    function handleSubmit(event) {
+        event.preventDefault();
+        const {username, password} = creds;
+        console.log(username + " " + password)
+    }
+
     return (
-        <div className="loginText">
+        <form className="loginText" onSubmit={handleSubmit}>
             <div className="col">
                 <div className="row">
                     <h3>Login here to access your notes</h3>
@@ -33,10 +39,10 @@ function Login() {
                     <input name="password" type="password" onChange={handleChange}></input>
                 </div>
                 <div className="row">
-                    <Button>Login</Button>
+                    <Button type="submit">Login</Button>
                 </div>
             </div>
-        </div>
+        </form>
     )
 }
 
