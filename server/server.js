@@ -9,6 +9,7 @@ const mongoUN = process.env.MONGOUN;
 const mongoPW = process.env.MONGOPW;
 
 mongoose.connect("mongodb+srv://" + mongoUN + ":" + mongoPW + "@cluster0.aaq3igl.mongodb.net/keeperDB");
+mongoose.set("strictQuery", true);
 const connection = mongoose.connection;
 connection.once("open", () => {
     console.log("MongoDB database connection established");

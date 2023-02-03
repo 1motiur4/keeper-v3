@@ -19,8 +19,8 @@ function Register() {
         })
     }
 
-    function submitUser() {
-        
+    function submitUser(event) {
+        event.preventDefault();
         createNewUser(user)
             .then(() => {
                 console.log("Log from Register.jsx")

@@ -50,10 +50,10 @@ router.route("/").post((req, res) => {
 //Called when deleting a note
 router.route("/").delete(async (req, res) => {
     await Note.findByIdAndDelete(req.query.id)
-    .then(() => {
-        res.status(200).end();
-        console.log("Log from delete route: note deleted");
-    })
+        .then(() => {
+            res.status(200).end();
+            console.log("Log from delete route: note deleted");
+        })
     console.log("Log from routes.js - deleted: " + req.query.id);
 })
 
@@ -63,33 +63,24 @@ router.route("/register").post(async (req, res) => {
         username: req.body.username,
         password: req.body.password
     });
-    // wrap in function 
-    //https://stackoverflow.com/questions/40897225/mongoose-js-findone-returning-query-metadata
-    const oldUser = User.findOne({username: newUser.username}, function(err, userObj) {
-        if(err){
-            return callback(err);
-        } else if (userObj){
-            return callback(null,userObj);
-        } else {
-            return callback();
-        }
-    });
-    console.log(oldUser);
+
+    const existingUsername = await User.findOne({username: newUser.username});
+    console.log(existingUsername);
 
     try {
-        if (oldUser) {
-            res.send({error: "User already exists!"});
+        if (existingUsername) {
+            res.send({ error: "User already exists!" });
+            console.log("existing user: " + existingUsername);
         }
         await newUser.save()
-        .then(() => {
-            console.log("New user created");
-            res.status(200).end();
-        })
-        .catch(err => console.log(err));
+            .then(() => {
+                console.log("New user created");
+                res.status(200).end();
+            })
+            .catch(err => console.log(err));
     } catch (error) {
-        res.send({status: "error!!!"});
+        res.send({ status: "error!!!" });
     }
-    
 })
 
 //Called when logging in
