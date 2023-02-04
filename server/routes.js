@@ -2,6 +2,7 @@ const router = require("express").Router();
 const bodyParser = require("body-parser");
 let Note = require("./models/Note");
 let User = require("./models/User");
+const bcrypt = require("bcrypt");
 
 router.use(bodyParser.urlencoded({ extended: true }));
 
@@ -59,9 +60,10 @@ router.route("/").delete(async (req, res) => {
 
 //Called for new user sign-up
 router.route("/register").post(async (req, res) => {
+    const bcryptedPassword = await bcrypt.hash(req.body.password, 10);
     const newUser = new User({
         username: req.body.username,
-        password: req.body.password
+        password: bcryptedPassword
     });
 
     const existingUsername = await User.findOne({username: newUser.username});
@@ -69,8 +71,8 @@ router.route("/register").post(async (req, res) => {
 
     try {
         if (existingUsername) {
-            res.send({ error: "User already exists!" });
             console.log("existing user: " + existingUsername);
+            return res.send({ error: "User already exists!" });
         }
         await newUser.save()
             .then(() => {
