@@ -6,6 +6,7 @@ import NotesView from "./notes/views/NotesView";
 import Login from "./user/components/Login";
 import Register from "./user/components/Register";
 import Home from "./notes/views/Home";
+import UserData from "./user/components/UserData";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/login" element={<Login />}></Route>
         <Route path="/register" element={<Register/>}></Route>
         <Route path="/notes" element={<NotesView />}></Route>
+        <Route path="/userData" element={<UserData />}></Route>
         <Route path="*" element={<div>ERROR 404!!!</div>}></Route>
       </Routes>
       <Footer />

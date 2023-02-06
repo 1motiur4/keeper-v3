@@ -1,8 +1,12 @@
+require('dotenv').config()
 const router = require("express").Router();
 const bodyParser = require("body-parser");
 let Note = require("./models/Note");
 let User = require("./models/User");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
+const JWT_SECRET = process.env.JWTSECRET;
 
 router.use(bodyParser.urlencoded({ extended: true }));
 
@@ -66,7 +70,7 @@ router.route("/register").post(async (req, res) => {
         password: bcryptedPassword
     });
 
-    const existingUsername = await User.findOne({username: newUser.username});
+    const existingUsername = await User.findOne({ username: newUser.username });
     console.log(existingUsername);
 
     try {
@@ -86,8 +90,41 @@ router.route("/register").post(async (req, res) => {
 })
 
 //Called when logging in
-router.route("/login").post((req, res) => {
-    console.log("login route!")
+router.route("/login").post(async (req, res) => {
+    const { username, password } = req.body;
+
+    const user = await User.findOne({ username: username });
+    if (!user) {
+        return res.json({ error: "User Not Found" });
+    }
+    if (await bcrypt.compare(password, user.password)) {
+        const token = jwt.sign({}, JWT_SECRET);
+
+        if (res.status(201)) {
+            return res.json({ status: "ok", data: token });
+        } else {
+            return res.json({ error: "error" });
+        }
+    }
+    res.json({ status: "error", error: "Invalid password" });
+});
+
+//retrieve user data
+router.route("/userData").post(async (req, res) => {
+    const { token } = req.body;
+    try {
+        const user = jwt.verify(token, JWT_SECRET);
+        const user_username = user.username;
+        User.findOne({ username: user_username })
+            .then((data) => {
+                res.send({ status: "ok", data: data });
+            })
+            .catch((error) => {
+                res.send({ status: "error", data: error });
+            })
+    } catch (error) {
+
+    }
 })
 
 module.exports = router;
