@@ -22,8 +22,12 @@ function Register() {
     function submitUser(event) {
         event.preventDefault();
         createNewUser(user)
-            .then(() => {
+            .then((data) => {
+                console.log(data);
                 console.log("Log from Register.jsx")
+                if (data.data.error) {
+                    alert(data.data.error);
+                }
             })
             .catch(console.error)
     }

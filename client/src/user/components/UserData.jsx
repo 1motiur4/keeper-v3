@@ -33,7 +33,7 @@ export default function UserDetails() {
           window.location.href = "./sign-in";
         }
       });
-  }, []);
+  });
 
   return admin ? <h1>"Welcome Admin</h1> : <UserHome userData={userData} />;
 }
