@@ -92,8 +92,10 @@ router.route("/register").post(async (req, res) => {
 //Called when logging in
 router.route("/login").post(async (req, res) => {
     const { username, password } = req.body;
+    console.log("Username: " + username);
 
     const user = await User.findOne({ username: username });
+    console.log(user);
     if (!user) {
         return res.json({ error: "User Not Found" });
     }
@@ -101,7 +103,7 @@ router.route("/login").post(async (req, res) => {
         const token = jwt.sign({}, JWT_SECRET);
 
         if (res.status(201)) {
-            return res.json({ status: "ok", data: token });
+            return res.json({token, username });
         } else {
             return res.json({ error: "error" });
         }
