@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from 'react-bootstrap'
 import { loginUser } from "../actions";
+import UserHome from "./UserHome";
 
 function Login() {
     const [creds, setCreds] = React.useState({
@@ -23,12 +24,10 @@ function Login() {
         event.preventDefault();
         loginUser(creds)
             .then((data) => {
-                console.log("Log from Login.jsx");
-                console.log(data);
-                alert("login successful");
-                window.localStorage.setItem("token", data.data);
-                window.localStorage.setItem("loggedIn", true);
-                window.location.href = "./userData";
+                console.log("Log from Login.jsx handleSubmit ", data);
+                //window.localStorage.setItem("token", data.data);
+                //window.localStorage.setItem("loggedIn", true);
+                //window.location.href = "./userData";
 
             })
             .catch(console.error);
