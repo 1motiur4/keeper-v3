@@ -92,18 +92,19 @@ router.route("/register").post(async (req, res) => {
 //Called when logging in
 router.route("/login").post(async (req, res) => {
     const { username, password } = req.body;
-    console.log("Username: " + username);
 
     const user = await User.findOne({ username: username });
-    console.log(user);
+    console.log("Log - Found user " + user);
     if (!user) {
         return res.json({ error: "User Not Found" });
     }
     if (await bcrypt.compare(password, user.password)) {
-        const token = jwt.sign({}, JWT_SECRET);
+        //const token = jwt.sign({}, JWT_SECRET);
 
         if (res.status(201)) {
-            return res.json({token, username });
+            console.log("req.body ", req.body);
+            //return res.json({token, username });
+            return res.json(req.body.username);
         } else {
             return res.json({ error: "error" });
         }
@@ -120,12 +121,13 @@ router.route("/userData").post(async (req, res) => {
         User.findOne({ username: user_username })
             .then((data) => {
                 res.send({ status: "ok", data: data });
+                console.log("LOG FROM routes.js /userData " + data);
             })
             .catch((error) => {
                 res.send({ status: "error", data: error });
             })
     } catch (error) {
-
+        console.log("Error from /userData route " + error);
     }
 })
 
